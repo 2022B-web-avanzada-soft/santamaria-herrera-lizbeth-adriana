@@ -57,7 +57,7 @@ const funcionFatArrow7 = (parametro) => parametro + 1;
 
 const funcionFatArrow8 = (numUno, numDos, numTres) => numUno + numDos + numTres;
 
-// ... => parametros infinitos => Legan en un arreglo de parametros
+// ... => parametros infinitos => Llegan en un arreglo de parametros
 //        Solo podemos tener un parametro infinito por funcion
 
 //function  sumarNumeros(a,b,c,d,e,... todosNumeros) --> esto esta bien ya que los parametros infinitos deben ir a l final

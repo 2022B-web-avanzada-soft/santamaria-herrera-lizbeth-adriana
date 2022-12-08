@@ -115,7 +115,7 @@ const respuestaForEach = arreglo
 console.log('respuestaForEach', respuestaForEach) //undefined
 
 
-//MAP*Modificar o MUTAR el arreglo y devuelve un nuevo arreglo
+//MAP(Modificar o MUTAR el arreglo y devuelve un nuevo arreglo
 //enviamos los datos a un nuevo arreglo
 //devuelve el nuevo arreglo
 const respuestaMap = arreglo

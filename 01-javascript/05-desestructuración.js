@@ -1,5 +1,5 @@
-//05-destructuracion
-    //Destructuracion de objetos  -> EL ORDEN SI IMPORTA
+//05-desestructuración
+    //Desestructuración de objetos  -> EL ORDEN SI IMPORTA
 
 const adrian = {
     nombre: "Adrian",
