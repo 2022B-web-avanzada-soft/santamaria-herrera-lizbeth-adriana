@@ -1,3 +1,4 @@
+HOLA
 // 01-javascript
 //      01-variables.js
 
@@ -161,4 +162,3 @@ notasTercerBimestre.total = notasTercerBimestre.total + 1
 console.log('Notas: ', notas)
 console.log('Notas Segundo Bimestre: ', notasSegundoBimestre)
 console.log('Notas Tercer Bimestre: ', notasTercerBimestre)
-
