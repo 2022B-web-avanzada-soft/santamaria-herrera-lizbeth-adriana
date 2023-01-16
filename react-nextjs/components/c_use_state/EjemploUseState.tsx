@@ -1,6 +1,6 @@
 //componentes/c_use_state/EjemplosUseState.tsx
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 interface  Usuario{
     nombre: string;
     edad: number;
@@ -16,24 +16,53 @@ export default function () {
         edad: 22,
         casado: false,
     }as Usuario)
-    setUsuario({nombre: "Adriana", edad: 21, casado: true,hijos:[]})
+
+    //Nos ayuda a escuchar cambios de las variables
+    useEffect(
+        ()=>{
+            console.log('Cambio numero', numero)
+        },
+        [numero] //Arreglo de las variables
+        //Si sel arreglo esta vacio se sejecuta al principio una vez
+    )
+
+    useEffect(
+        ()=>{
+            console.log('Cambio ArregloNumero', arregloNumeros)
+        },
+        [arregloNumeros] //Arreglo de las variables
+    )
+
+    useEffect(
+        ()=>{
+            console.log('Cambio usuario', usuario)
+        },
+        [usuario] //Arreglo de las variables
+    )
+
+    useEffect(
+        ()=>{
+            console.log('Cambio todo', numero, arregloNumeros, usuario)
+        },
+        [numero, arregloNumeros, usuario] //Arreglo de las variables
+    )
 
     return (<>
-        <button className="bg-blue-500" onClick={(event)=>{
+        <button className="bg-blue-500 m-2" onClick={(event)=>{
             event.preventDefault();
             setNumero(numero+1);
         }}
         >
             Numero</button>
 
-        <button className="bg-blue-500" onClick={(event)=>{
+        <button className="bg-blue-500 m-2" onClick={(event)=>{
             event.preventDefault();
             setArregloNumeros([...arregloNumeros,1]);
         }}
         >
             Arreglo</button>
 
-        <button className="bg-blue-500" onClick={(event)=>{
+        <button className="bg-blue-500 m-2" onClick={(event)=>{
             event.preventDefault();
             let UsuarioNuevo ={...usuario, nombre: new Date().toString()};//sobreescribimos el nombre
             setUsuario(UsuarioNuevo);
