@@ -1,0 +1,17 @@
+[
+	{
+		"numeroDiasDeAlquiler": 10,
+		"fechaRenta": "1/22/2023",
+		"nombreDelEncargadoDelServicio": "Lizbeth Santamaria",
+		"nombreDelRentador": "Joselyn Herrea",
+		"pagoEnEfectivo": "SI",
+		"autoSeleccionado": {
+			"marca": "Chevrolet",
+			"modelo": "Aveo",
+			"numeroDePuertas": 4,
+			"ultimaFechaServicio": "",
+			"precioDeLaRentaPorDia": 45
+		},
+		"totalAPagar": 450
+	}
+]
