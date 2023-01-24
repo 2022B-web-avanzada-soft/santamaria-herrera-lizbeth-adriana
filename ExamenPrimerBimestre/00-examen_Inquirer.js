@@ -1,10 +1,15 @@
 const inquirer = require('inquirer');
-const autoRentaFunciones = require("./renta_auto_CRUD.js")
-const autosDisponibles = require("./auto_CRUD.js")
+const autoRentaFunciones = require("./04-renta_auto_CRUD.js")
+const autosDisponibles = require("./03-auto_CRUD.js")
+const funcionesCRUD = require("./02-funcionesCreateRead.js")
+
+let archivoAutosDisponibles = "autosDisponibles.txt";
+let archivoAutosRentados = "detallesRentaAutos.txt";
 
 async function main() {
     try {
-        console.log("Bienvenido al sistema de renta de autos")
+        console.log("********** BIENVENIDO AL SISTEMA DE RENTA DE AUTOS **********")
+
         await inquirer
             .prompt([
                 {
@@ -28,9 +33,8 @@ async function main() {
                             .then(
                                 async answersAutosDisponibles => {
                                     if (answersAutosDisponibles.autosDisponibles === "Listar todos los autos disponibles") {
-                                        let arregloAutosDisponibles = await autosDisponibles.listarAutosDisponibles();
+                                        let arregloAutosDisponibles = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosDisponibles);
                                         console.log(arregloAutosDisponibles);
-
                                     }
                                     else if (answersAutosDisponibles.autosDisponibles === "Añadir un Auto") {
                                         const autoNuevo = await inquirer
@@ -48,18 +52,31 @@ async function main() {
                                                 {
                                                     type: 'input',
                                                     name: 'numeroDePuertas',
-                                                    message: 'Ingrese el numero de puertas'
+                                                    message: 'Ingrese el numero de puertas',
+                                                    validate:(answer) => {
+                                                        if (isNaN(answer)) {
+                                                            return "Debe ingresar un numero";
+                                                        }
+                                                        return true;
+                                                    },
                                                 },
                                                 {
                                                     type: 'input',
                                                     name: 'precioDeLaRentaPorDia',
-                                                    message: 'Ingrese el precio de la renta por dia'
+                                                    message: 'Ingrese el precio de la renta por dia',
+                                                    validate:(answer) => {
+                                                        if (isNaN(answer)) {
+                                                            return "Debe ingresar un numero";
+                                                        }
+                                                        return true;
+                                                    },
                                                 },
                                             ]);
                                         await autosDisponibles.guardarEnArchivoDatosAutoDisponibles(autoNuevo.marca, autoNuevo.modelo, autoNuevo.numeroDePuertas, autoNuevo.precioDeLaRentaPorDia, "");
+                                        console.log("AUTO INGRESADO EXITOSAMENTE")
                                     }
                                     else if (answersAutosDisponibles.autosDisponibles === "Actualizar precio de renta") {
-                                        let arregloAutosDisponibles = await autosDisponibles.listarAutosDisponibles();
+                                        let arregloAutosDisponibles = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosDisponibles);
                                         await inquirer
                                             .prompt([
                                                 {
@@ -75,7 +92,13 @@ async function main() {
                                                             {
                                                                 type: 'input',
                                                                 name: 'precioRentaAuto',
-                                                                message: 'Ingrese el nuevo precio por dia de renta del auto'
+                                                                message: 'Ingrese el nuevo precio por dia de renta del auto',
+                                                                validate:(answer) => {
+                                                                    if (isNaN(answer)) {
+                                                                        return "Debe ingresar un numero";
+                                                                    }
+                                                                    return true;
+                                                                },
                                                             },
                                                         ]).then(
                                                             async answerPrecio => {
@@ -87,7 +110,7 @@ async function main() {
                                             );
                                     }
                                     else if (answersAutosDisponibles.autosDisponibles === "Eliminar Auto") {
-                                        let arregloAutosDisponibles = await autosDisponibles.listarAutosDisponibles();
+                                        let arregloAutosDisponibles = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosDisponibles);
                                         await inquirer
                                             .prompt([
                                                 {
@@ -98,11 +121,30 @@ async function main() {
                                                 }
                                             ]).then(
                                                 async answerAutoEliminar => {
-                                                    let autoAEliminar = JSON.parse(answerAutoEliminar.listaAutosDisponibles);
-                                                    await autosDisponibles.eliminarAuto(autoAEliminar);
+                                                    await inquirer
+                                                        .prompt([
+                                                            {
+                                                                type: 'list',
+                                                                name: 'confirmarEliminacion',
+                                                                message: 'Esta seguro que desea eliminar este auto?',
+                                                                choices: ['SI','NO'],
+                                                            }
+                                                        ]).then(
+                                                            async answerConfirmarEliminar => {
+                                                                if (answerConfirmarEliminar.confirmarEliminacion === 'SI') {
+                                                                    let autoAEliminar = JSON.parse(answerAutoEliminar.listaAutosDisponibles);
+                                                                    await autosDisponibles.eliminarAuto(autoAEliminar)
+                                                                    console.log("AUTO ELIMINADO EXITOSAMENTE")
+                                                                }else{
+                                                                    console.log("NO SE HA ELIMINADO LA INFORMACION DEL AUTO")
+                                                                    console.log("GRACIAS POR USAR NUESTRO SISTEMA");
+                                                                }
+                                                            }
+                                                        );
                                                 });
-                                    } else {
-                                        console.log("Gracias por usar nuestro sistema");
+                                    }
+                                    else {
+                                        console.log("GRACIAS POR USAR NUESTRO SISTEMA");
                                     }
                                 }
                             );
@@ -120,7 +162,7 @@ async function main() {
                             .then(
                                 async answersRentaAuto => {
                                     if (answersRentaAuto.rentaAutoOpciones === "Listar autos rentados") {
-                                        let arregloAutosRentados = await autoRentaFunciones.listarAutosRentados();
+                                        let arregloAutosRentados = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosRentados);
                                         let numAutoRentado = 1;
                                         arregloAutosRentados.forEach(
                                             (valorAutoRentadoActual) => {
@@ -130,7 +172,7 @@ async function main() {
                                             });
                                     }
                                     else if (answersRentaAuto.rentaAutoOpciones === "Rentar Auto") {
-                                        let arregloAutosDisponibles = await autosDisponibles.listarAutosDisponibles();
+                                        let arregloAutosDisponibles = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosDisponibles);
                                         await inquirer
                                             .prompt([
                                                 {
@@ -147,7 +189,13 @@ async function main() {
                                                             {
                                                                 type: 'input',
                                                                 name: 'numeroDiasDeAlquiler',
-                                                                message: 'Ingrese el numero de dias que alquilara el auto'
+                                                                message: 'Ingrese el numero de dias que alquilara el auto',
+                                                                validate:(answer) => {
+                                                                    if (isNaN(answer)) {
+                                                                        return "Debe ingresar un numero";
+                                                                    }
+                                                                    return true;
+                                                                },
                                                             },
                                                             {
                                                                 type: 'input',
@@ -165,9 +213,10 @@ async function main() {
                                                         detalleRenta.nombreDelRentador, detalleRenta.pagoEnEfectivo, answers.autosDisponibles);
                                                 }
                                             );
+                                        console.log("SE HAN INGRESADO LOS DATOS CORRECTAMENTE")
                                     }
                                     else if (answersRentaAuto.rentaAutoOpciones === "Actualizar informacion renta") {
-                                        let arregloAutosRentados = await autoRentaFunciones.listarAutosRentados();
+                                        let arregloAutosRentados = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosRentados);
                                         await inquirer
                                             .prompt([
                                                 {
@@ -183,7 +232,7 @@ async function main() {
                                                             {
                                                                 type: 'checkbox',
                                                                 name: 'listaVarialesAActualizar',
-                                                                message: 'Selecciona los datos que desea actualizar',
+                                                                message: 'Para selecciona los datos que desea actualizar presione la tecla ESPACIO',
                                                                 choices: ["Numero de dias de alquiler", "Nombre del encargado del servicio", "Nombre del rentador"],
                                                             },
                                                         ]).then(
@@ -213,35 +262,38 @@ async function main() {
                                                                             }
                                                                         )
                                                                 }
-                                                                await autoRentaFunciones.actualizarPrecioAuto(numeroDiasDeAlquiler, nombreDelEncargadoDelServicio, nombreDelRentador, detallesAutoRentadoSeleccionado);
+                                                                await autoRentaFunciones.actualizarDetallesRentaAuto(numeroDiasDeAlquiler, nombreDelEncargadoDelServicio, nombreDelRentador, detallesAutoRentadoSeleccionado);
                                                             }
                                                         )
                                                 }
                                             );
+                                        console.log("DATOS ACTUALIZADOS CORRECTAMENTE")
                                     }
                                     else if (answersRentaAuto.rentaAutoOpciones === "Entregar auto") {
-                                        let arregloAutosRentados = await autoRentaFunciones.listarAutosRentados();
+                                        let arregloAutosRentados = await funcionesCRUD.listarAutos_DetalleRenta(archivoAutosRentados);
                                         await inquirer
                                             .prompt([
                                                 {
                                                     type: 'list',
                                                     name: 'listaAutosRentados',
-                                                    message: 'Selecciona el auto que deseas entregar',
+                                                    message: 'Selecciona el detalle de la renta con el auto que deseas entregar',
                                                     choices: arregloAutosRentados,
                                                 }
                                             ]).then(
-                                                async answerAutoEliminar => {
-                                                    let autoAEntregar = JSON.parse(answerAutoEliminar.listaAutosRentados);
-                                                    await autoRentaFunciones.entregarAuto(autoAEntregar);
+                                                async answerDetalleRentaAEliminar => {
+                                                    let detalleAutoAEntregar = JSON.parse(answerDetalleRentaAEliminar.listaAutosRentados);
+                                                    await autoRentaFunciones.entregarAuto(detalleAutoAEntregar);
                                                 });
+                                        console.log("AUTO ENTREGADO")
                                     }
                                     else {
-                                        console.log("Gracias por usar nuestro sistema");
+                                        console.log("GRACIAS POR USAR NUESTRO SISTEMA");;
                                     }
                                 })
 
-                    } else {
-                        console.log("Gracias por usar nuestro sistema");
+                    }
+                    else {
+                        console.log("GRACIAS POR USAR NUESTRO SISTEMA");
                     }
                 }
             )

@@ -1,12 +1,5 @@
 [
 	{
-		"marca": "Chevrolet",
-		"modelo": "Aveo",
-		"numeroDePuertas": 4,
-		"ultimaFechaServicio": "",
-		"precioDeLaRentaPorDia": 45
-	},
-	{
 		"marca": "Suzuki",
 		"modelo": "Suzuki SZ",
 		"numeroDePuertas": 4,
@@ -35,10 +28,17 @@
 		"precioDeLaRentaPorDia": 90
 	},
 	{
-		"marca": "Toyota",
-		"modelo": "FORTUNNER",
-		"numeroDePuertas": "4",
-		"ultimaFechaServicio": "1/23/2023, 9:31:13 AM",
-		"precioDeLaRentaPorDia": "150"
+		"marca": "Suzuki",
+		"modelo": "Suzuki SZ",
+		"numeroDePuertas": 4,
+		"ultimaFechaServicio": "1/23/2023, 8:00:30 PM",
+		"precioDeLaRentaPorDia": 120
+	},
+	{
+		"marca": "Hyundai",
+		"modelo": "I10",
+		"numeroDePuertas": 4,
+		"ultimaFechaServicio": "1/23/2023, 8:57:37 PM",
+		"precioDeLaRentaPorDia": 40
 	}
 ]
