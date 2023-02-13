@@ -1,13 +1,31 @@
 //[idTodo].tsx
 
 import Layout from "../../components/Layout";
-import {TodoHttp} from "../../servicios/http/todo.http";
+import {Todo, TodoHttp} from "../../servicios/http/todo.http";
 import {GetStaticPaths, GetStaticProps} from "next";
+import {useRouter} from 'next/router'
 
-export default function () {
+interface ParametrosTodo{
+    error?:string
+    todo?: Todo;
+}
+
+// i_todos/hijos_todos/index.ts
+// i_todos/hijos_todos/[idHijosTodos].ts
+// http://localhost:3000/i_todos/hijos_todos/[idHijosTodos]
+
+// i_todos/[idTodo]/hijos_todos/index.ts
+// i_todos/[idTodo]/hijos_todos/[idHijosTodos].ts
+// http://localhost:3000/i_todos/[idTodo]/hijos_todos/[idHijosTodos]
+
+export default function (params: ParametrosTodo) {
+    console.log(params)
+    const router = useRouter()
+    const {idTodo, nombre, apellido} =router.query
+    console.log(idTodo, nombre, apellido)
     return(
         <Layout title={"To do's hijo"}>
-            <h1>To do's hijo</h1>
+            <h1> To do´s hijo {params?.todo.title}</h1>
         </Layout>
     )
 }
