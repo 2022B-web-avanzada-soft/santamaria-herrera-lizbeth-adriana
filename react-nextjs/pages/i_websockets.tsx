@@ -12,6 +12,7 @@ export interface FormularioModelo{
     nombre: string;
     mensaje: string;
 }
+export type MensajeSala = FormularioModelo;
 
 export default function (){
     const [isConnected, setIsConnected] = useState(socket.connected)
@@ -47,9 +48,20 @@ export default function (){
             });
             socket.on('escucharEventoUnirseSala', (data: { mensaje: string }) => {
                 console.log('escucharEventoUnirseSala');
+                const nuevoMensaje: MensajeChatProps = {
+                    mensaje: data.mensaje,
+                    nombre: 'Sistema',
+                    posicion: 'I'
+                };
+                setMensajes((mensajesAnteriores) => [...mensajesAnteriores, nuevoMensaje]);
             });
-            socket.on('escucharEventoMensajeSala', (data: { mensaje: string }) => {
-                console.log('escucharEventoMensajeSala');
+            socket.on('escucharEventoMensajeSala', (data:MensajeSala) => {
+                const nuevoMensaje: MensajeChatProps = {
+                    mensaje: data.salaId + ' - ' + data.mensaje,
+                    nombre: data.nombre,
+                    posicion: 'I'
+                };
+                setMensajes((mensajesAnteriores) => [...mensajesAnteriores, nuevoMensaje]);
             });
 
         },
@@ -78,7 +90,7 @@ export default function (){
     }
 
     const unirseSalaOEnviarMensajeASala = (data:FormularioModelo) => {
-        if(data.mensaje !== ''){
+        if(data.mensaje === ''){
             //unimos a la sala
             const dataEventoUnirseSala = {
                 salaId:data.salaId,
@@ -119,10 +131,19 @@ export default function (){
         }
     }
 
+    const estaConectado = () =>{
+        if(isConnected){
+            return <span>Conectado :)</span>
+        }else{
+            return <span>Desconectado :(</span>
+        }
+    }
+
     return (
         <>
             <Layout title="Formulario">
                 <h1>Websockets</h1>
+                <p><strong>{estaConectado()}</strong></p>
                 <button className={'btn btn-success'} onClick={() => enviarEventoHola()}>Enviar evento hola</button>
                 <div className="row">
                     <div className="col-sm-6">
@@ -153,7 +174,7 @@ export default function (){
                                         <label htmlFor="nombre" className="form-label">Nombre</label>
                                         <input type="text"
                                                className="form-control"
-                                               placeholder="EJ: Adrian"
+                                               placeholder="EJ: Lizbeth"
                                                id="nombre"
                                                {...register('nombre',{required:'Nombre requerido'})}
                                                aria-describedby="nombreHelp"/>
