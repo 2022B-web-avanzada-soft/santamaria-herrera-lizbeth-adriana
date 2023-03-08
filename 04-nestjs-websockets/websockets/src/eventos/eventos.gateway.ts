@@ -8,6 +8,7 @@ import {Server, Socket} from 'socket.io';
             origin: '*', // Habilitando la conexion desde cualquier IP
         }
     })
+
 export class EventosGateway{
     @SubscribeMessage('hola') // Nombre del metodo para recibir eventos --> enviamos
     devolverHola(

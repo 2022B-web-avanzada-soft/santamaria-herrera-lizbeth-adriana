@@ -1,5 +1,3 @@
-//MensajeChat
-
 export interface MensajeChatProps {
     nombre: string;
     mensaje: string;
@@ -11,7 +9,7 @@ export default function (props: MensajeChatProps){
         {
             posicion === 'D' ?
                 <p className='text-right'>
-                    {mensaje}<strong>:{nombre}</strong>
+                    <strong>{nombre}:</strong>{mensaje}
                 </p> :
                 <p className='text-left'>
                     <strong>{nombre}:</strong>{mensaje}
