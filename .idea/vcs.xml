@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/04-nestjs-websockets/websockets" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Tareas/03-Sockets/websockets" vcs="Git" />
   </component>
 </project>
