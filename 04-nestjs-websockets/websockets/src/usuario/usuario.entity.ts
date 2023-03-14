@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {NotaEntity} from "../nota/nota.entity";
 
 @Entity('epn_usuario') //nombre de la tabla en la bdd
 export class UsuarioEntity{
@@ -33,4 +34,10 @@ export class UsuarioEntity{
         comment: 'U = usuario; A = administrador;'
     })
     rol: string;
+
+    @OneToMany(
+        () => NotaEntity, // Entidad HIJA
+        (instanciaNotaEntity) =>
+            instanciaNotaEntity.usuario) // Campo Relacionado
+    notas: NotaEntity[]
 }
